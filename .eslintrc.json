@@ -1,3 +1,42 @@
 {
-  "extends": "next/core-web-vitals"
+	"env": {
+		"browser": true,
+		"es2021": true
+	},
+	"settings": {
+		"react": {
+			"version": "detect"
+		}
+	},
+	"extends": [
+		"eslint:recommended",
+		"plugin:@typescript-eslint/recommended",
+		"plugin:react/recommended",
+		"plugin:@next/next/recommended",
+		"plugin:prettier/recommended",
+		"prettier"
+	],
+	"parser": "@typescript-eslint/parser",
+	"parserOptions": {
+		"ecmaVersion": "latest",
+		"sourceType": "module"
+	},
+	"plugins": ["@typescript-eslint", "react", "react-hooks", "prettier"],
+	"rules": {
+		"prettier/prettier":[ "error",
+    {
+      "singleQuote": true,
+			"jsxSingleQuote": true,
+			"semi": true,
+			"bracketSpacing": true,
+			"trailingComma": "none",
+      "endOfLine": "auto"
+			}],
+			"react-hooks/rules-of-hooks": "error",
+			"react-hooks/exhaustive-deps": "warn",
+			"react/react-in-jsx-scope": "off",
+			"no-unused-vars": "error",
+			"no-undef": "off",
+      "no-explicit-any": "off"
+	}
 }
