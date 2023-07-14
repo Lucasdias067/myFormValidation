@@ -8,9 +8,8 @@ body {
   box-sizing: border-box;
 }
 
-html,
 body {
-  background-color: #18181B;
+  min-height: 100vh;
 }
 
 button {

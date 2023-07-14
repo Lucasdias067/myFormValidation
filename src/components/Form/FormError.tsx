@@ -29,7 +29,7 @@ export function FormError({ name }: ReactNode) {
   if (!fieldError) return null;
 
   return (
-    <span className='block text-[13px] text-red-500'>
+    <span className='block text-[13px] font-medium text-rose-600 dark:text-red-500'>
       {fieldError.message?.toString()}
     </span>
   );

@@ -1,9 +1,10 @@
 'use client';
 import { Form } from './Form';
-import { useState } from 'react';
+import { useEffect } from 'react';
 import { useForm, useFieldArray, FormProvider } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useAuth } from '@/context/OutputContext';
 
 const createUserFormSchema = z.object({
   name: z
@@ -30,10 +31,10 @@ const createUserFormSchema = z.object({
     .min(2, 'Insira pelo menos duas tecnologias')
 });
 
-type CreateUserFormData = z.infer<typeof createUserFormSchema>;
+export type CreateUserFormData = z.infer<typeof createUserFormSchema>;
 
 export default function RegisterForm() {
-  const [output, setOutput] = useState<CreateUserFormData[]>([]);
+  const { output, setOutput } = useAuth();
 
   const createUserForm = useForm<CreateUserFormData>({
     resolver: zodResolver(createUserFormSchema)
@@ -69,12 +70,28 @@ export default function RegisterForm() {
     append({ title: '', knowledge: '' });
   }
 
+  useEffect(() => {
+    if (output && output.length) {
+      localStorage.setItem('userForm', JSON.stringify(output));
+    }
+  }, [output]);
+
+  useEffect(() => {
+    const userForm = localStorage.getItem('userForm');
+    console.log(userForm);
+
+    if (userForm) {
+      const parsedUserForm = JSON.parse(userForm);
+      setOutput(parsedUserForm);
+    }
+  }, [setOutput]);
+
   return (
-    <section className='grid h-full grid-cols-[400px,1fr] gap-4'>
+    <section className='grid min-h-screen grid-cols-[400px,1fr] gap-4'>
       <FormProvider {...createUserForm}>
         <div>
           <form
-            className='fixed top-[10%] flex w-full max-w-sm flex-col gap-4 rounded-2xl border border-zinc-600 p-6'
+            className='fixed top-[10%] flex w-full max-w-sm flex-col gap-4 rounded-2xl border border-zinc-400 bg-zinc-200 p-6 dark:border-zinc-600 dark:bg-zinc-900 '
             onSubmit={handleSubmit(createUsers)}
           >
             <Form.Field>
@@ -111,7 +128,7 @@ export default function RegisterForm() {
                 <button
                   onClick={addNewTech}
                   type='button'
-                  className='text-sm text-emerald-500'
+                  className='rounded-md bg-emerald-500 px-2 py-1 text-[0.8em] font-medium text-white transition-colors  hover:bg-emerald-600 dark:bg-zinc-900 dark:text-emerald-500'
                 >
                   Adicionar
                 </button>
@@ -134,7 +151,7 @@ export default function RegisterForm() {
                     <Form.Field className='flex flex-col items-center'>
                       <select
                         {...register(`techs.${index}.knowledge`)}
-                        className='h-10 w-16 rounded border border-zinc-600 bg-zinc-800 px-3 text-white shadow-sm'
+                        className='h-10 w-16 rounded border border-zinc-600 bg-white px-3 text-zinc-950 shadow-sm dark:bg-zinc-800 dark:text-white'
                       >
                         <option disabled></option>
                         {techKnowledgeLevel.map((tech) => (
@@ -150,14 +167,14 @@ export default function RegisterForm() {
             </Form.Field>
             <button
               type='submit'
-              className='h-10 rounded bg-emerald-500 font-semibold text-white'
-              disabled={Object.keys(errors).length ? true : false}
+              className='h-10 rounded bg-emerald-500 font-semibold text-white transition-colors  hover:bg-emerald-600'
+              disabled={Object.keys(errors).length > 0}
             >
               Salvar
             </button>
           </form>
         </div>
-        <Form.Output output={output} />
+        <Form.Output />
       </FormProvider>
     </section>
   );

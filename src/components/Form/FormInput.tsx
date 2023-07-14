@@ -10,7 +10,7 @@ export function FormInput({ name, ...rest }: inputProps) {
 
   return (
     <input
-      className='mb-1 h-10 rounded border border-zinc-600 bg-zinc-800 px-3 text-[15px] text-white shadow-sm '
+      className='mb-1 h-10 rounded border px-3 text-[15px] text-zinc-950 shadow-sm dark:border-zinc-600 dark:bg-zinc-800 dark:text-white '
       {...register(name)}
       {...rest}
     />
