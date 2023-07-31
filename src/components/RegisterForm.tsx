@@ -10,6 +10,7 @@ const createUserFormSchema = z.object({
   name: z
     .string()
     .nonempty('O nome é obrigatário')
+    .refine((name) => name.trim().length > 0, 'O nome é obrigatário')
     .transform((name) =>
       name
         .trim()
@@ -31,7 +32,7 @@ const createUserFormSchema = z.object({
           .string()
           .nonempty('O titúlo é obrigatório')
           .transform((title) => title.trim())
-          .refine((title) => title.length > 0, 'Obrigatório'),
+          .refine((title) => title.length > 0, 'O titúlo é obrigatório'),
         knowledge: z
           .string()
           .nonempty('Obrigatório')
