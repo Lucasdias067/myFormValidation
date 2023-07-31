@@ -7,8 +7,8 @@ export default function ToggleTheme() {
     const systemPreference = window.matchMedia(
       '(prefers-color-scheme: dark)'
     ).matches;
-    const pageClasses = document.documentElement.classList;
     const darkClass = localStorage.getItem('theme') === 'dark';
+    const pageClasses = document.documentElement.classList;
 
     systemPreference && darkClass && pageClasses.add('dark');
   }, []);

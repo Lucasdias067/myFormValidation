@@ -20,12 +20,23 @@ const createUserFormSchema = z.object({
         .join(' ')
     ),
   email: z.string().nonempty('O email é obrigatório').email('email inválido!'),
-  password: z.string().min(6, 'A senha precisa de no mínimo 6 caracteres'),
+  password: z
+    .string()
+    .min(6, 'A senha precisa de no mínimo 6 caracteres')
+    .transform((password) => password.trim()),
   techs: z
     .array(
       z.object({
-        title: z.string().nonempty('O titúlo é obrigatório'),
-        knowledge: z.string().nonempty('Obrigatório')
+        title: z
+          .string()
+          .nonempty('O titúlo é obrigatório')
+          .transform((title) => title.trim())
+          .refine((title) => title.length > 0, 'Obrigatório'),
+        knowledge: z
+          .string()
+          .nonempty('Obrigatório')
+          .transform((knowledge) => knowledge.trim())
+          .refine((knowledge) => knowledge.length > 0, 'Obrigatório')
       })
     )
     .min(2, 'Insira pelo menos duas tecnologias')
@@ -78,7 +89,6 @@ export default function RegisterForm() {
 
   useEffect(() => {
     const userForm = localStorage.getItem('userForm');
-    console.log(userForm);
 
     if (userForm) {
       const parsedUserForm = JSON.parse(userForm);
