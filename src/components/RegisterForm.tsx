@@ -5,6 +5,7 @@ import { useForm, useFieldArray, FormProvider } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useAuth } from '@/context/OutputContext';
+import { XCircleIcon } from '@heroicons/react/24/solid';
 
 const createUserFormSchema = z.object({
   name: z
@@ -79,7 +80,12 @@ export default function RegisterForm() {
   }
 
   function addNewTech() {
+    if (fields.length === 6) return;
     append({ title: '', knowledge: '' });
+  }
+
+  function removeNewTech(id: string) {
+    remove(fields.findIndex((field) => field.id === id));
   }
 
   useEffect(() => {
@@ -149,7 +155,7 @@ export default function RegisterForm() {
                 return (
                   <Form.Field
                     key={field.id}
-                    className='flex items-baseline gap-2'
+                    className='flex items-center gap-2'
                   >
                     <Form.Field className='flex-1 flex-col'>
                       <Form.Input
@@ -164,13 +170,16 @@ export default function RegisterForm() {
                         {...register(`techs.${index}.knowledge`)}
                         className='h-10 w-16 rounded border border-zinc-600 bg-white px-3 text-zinc-950 shadow-sm dark:bg-zinc-800 dark:text-white'
                       >
-                        <option disabled></option>
                         {techKnowledgeLevel.map((tech) => (
                           <option key={tech}>{tech}</option>
                         ))}
                       </select>
                       <Form.Error name={`techs.${index}.knowledge`} />
                     </Form.Field>
+                    <XCircleIcon
+                      onClick={() => removeNewTech(field.id)}
+                      className='w-6 cursor-pointer text-rose-700 dark:text-rose-500'
+                    />
                   </Form.Field>
                 );
               })}
