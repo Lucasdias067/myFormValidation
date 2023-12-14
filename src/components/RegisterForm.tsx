@@ -21,7 +21,7 @@ const createUserFormSchema = z.object({
         })
         .join(' ')
     ),
-  email: z.string().nonempty('O email é obrigatório').email('email inválido!'),
+  email: z.string().nonempty('O email é obrigatório').email('email inválido'),
   password: z
     .string()
     .min(6, 'A senha precisa de no mínimo 6 caracteres')
